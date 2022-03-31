@@ -53,9 +53,9 @@ class ContentResource(Resource):
             return self.create_response(request, {'content': content})
         response = connector.get_user_from_user_service(user_id)
         if response.get('error'):
-            return self.error_response(request, {'error': response['error'], 'message': response['message']})
+            return self.error_response(request, {'success': False, 'error': response['error'], 'message': response['message']})
         content = dal.get_content_for_user(user_id)
-        return self.create_response(request, {'content': content})
+        return self.create_response(request, {'success': True, 'content': content})
 
     def fetch_series(self, request, *args, **kwargs):
         title = request.GET.get('title')

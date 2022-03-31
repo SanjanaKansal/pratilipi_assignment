@@ -43,17 +43,17 @@ class DailyPassResource(Resource):
 
         response = connector.get_series_from_content_service(title)
         if response.get('error'):
-            return self.error_response(request, {'error': response['error'], 'message': response['message']})
+            return self.error_response(request, {'success': False,'error': response['error'], 'message': response['message']})
 
         try:
             user_dal.get_user(user_id)
         except UserDoesNotExistException as e:
-            return self.error_response(request, {'error': e.error, 'message': e.message})
+            return self.error_response(request, {'success': False,'error': e.error, 'message': e.message})
 
         try:
             chapter = dal.unlock_chapter(user_id, title)
         except NoLockedChapterException as e:
-            return self.error_response(request, {'error': e.error, 'message': e.message})
+            return self.error_response(request, {'success': False,'error': e.error, 'message': e.message})
         return self.create_response(
             request,
             {
