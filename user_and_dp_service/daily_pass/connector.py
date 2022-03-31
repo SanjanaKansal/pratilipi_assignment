@@ -1,4 +1,5 @@
 import requests
+import os
 
 content_service_host = os.getenv("CONTENT_SERVICE_HOST", "http://router:80")
 CONTENT_SERVICE_BASE_URL = "{}/api/v1/content/".format(content_service_host)
