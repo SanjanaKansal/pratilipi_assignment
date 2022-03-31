@@ -1,0 +1,5 @@
+requests==2.27.1
+mysqlclient
+django-mysql==2.2.0
+django-tastypie==0.14.2
+Django==2.2.21

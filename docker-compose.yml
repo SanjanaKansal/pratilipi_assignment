@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  content_db:
+    image: mysql:5.7
+    platform: linux/x86_64
+    environment:
+       MYSQL_DATABASE: 'db'
+       MYSQL_ROOT_PASSWORD: 'password'
+
+  userdailypass_db:
+    image: mysql:5.7
+    platform: linux/x86_64
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'password'
+
+  content:
+    container_name: content
+    build:
+      context: ./content_service
+    depends_on:
+      - content_db
+    environment:
+      USER_DP_SERVICE_HOST: 'http://userdailypass:8000'
+
+  userdailypass:
+    container_name: userdailypass
+    build:
+      context: ./user_and_dp_service
+    depends_on:
+      - userdailypass_db
+    environment:
+      CONTENT_SERVICE_HOST: 'http://content:8000'
+
+  router:
+    container_name: router
+    build:
+      context: ./nginx
+    ports:
+      - '8000:80'
+    depends_on:
+      - content
+      - userdailypass
