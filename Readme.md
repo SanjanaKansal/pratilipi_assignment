@@ -11,22 +11,47 @@ the content
   as following:
    - Upload content (series + chapters): [POST] `/api/v1/content/`
    ```json
-      {}
+      {
+         "title": string,
+         "chapters" : [{"title": string}, {"title": string}]
+      }
     ```
-   - Fetch all content: [GET] ``
-   ```json
-      Query parametes:
+   - Fetch all content: [GET] `/api/v1/content/`
+   
+   - Fetch all content for a user: [GET] `/api/v1/content/`
+   ```shell
+
+      Query params:
         user_id: string
     ```
-   - Fetch all content for a user: [GET] ``
-   ```json
 
-    ```
 
 2. User and Daily Pass Service (Referred as User and DP Service): This service is the merge of 
   two supposed services(user management service and daily pass service). This service is 
-  responsible to manage user-data and the chapters unlocked by the users. The APIs 
+  responsible to manage user-data and chapter unlocking by users. The APIs 
   offered by this service are as following:
+     - Create user : [POST] `/api/v1/user/`
+   ```json
+      {
+         "username": string,
+         "password" : string
+      }
+    ```
+   
+   - Unlock chapter for user: [POST] `/api/v1/daily_pass/` 
+   ```shell
+
+      Query params:
+        user_id: string
+
+    ```
+
+    ```shell
+      Body:
+         {
+            "title": string
+         }
+    ```
 
 These services are not directly exposed to the external world, but they can be accessed via a router
 (Nginx in this case).
@@ -53,7 +78,7 @@ You will need [Docker] and [Docker Compose] on the host in order to start the ap
 
 - Clone the repository:
 ```shell
-git clone 
+git clone https://github.com/SanjanaKansal/pratilipi_assignment
 ```
 - Start the containers:
 ```shell
@@ -61,14 +86,13 @@ docker-compose -f docker-compose.yml up -d --remove-orphans
 ```
 
 This will start the complete application and expose a service on port `8000` of the host. A 
-postman collection is attached to give an example of all the APIs in `pratilipi.postman_collection.
-json` file. 
+postman collection is attached to give an example of all the APIs in `pratilipi.postman_collection.json` file. 
 
 ## Further Improvements
 1. Intercommunication between the services is happening through REST API calls which can be changed 
 to RPC calls.
 2. All APIs can have all sort of request and data validation, e.g.: type validation, password 
-strength check, etc.
+strength check etc.
 
 ## Tech
 
